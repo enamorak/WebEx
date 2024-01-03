@@ -1,0 +1,26 @@
+/* Дополнительные стили для блока с данными о пешеходных маршрутах */
+.table-auto {
+    width: 100%;
+    margin-top: 1em;
+    border-collapse: collapse;
+}
+  
+.table-auto th,
+.table-auto td {
+    border: 1px solid #e2e8f0;
+    padding: 0.75em;
+    text-align: left;
+}
+  
+/* Дополнительные стили для блока со списком доступных гидов */
+.grid {
+    display: grid;
+}
+  
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+  
+.bg-gray-100 {
+    background-color: #d1d5db;
+}  
