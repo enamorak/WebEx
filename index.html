@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comforter&family=Tektur&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">  
+    
 </head>  
 <body>  
     <!-- Плейсхолдер, чтобы шапка ничего не закрывала -->  
@@ -66,8 +67,9 @@
         <h2 class="text-2xl font-bold text-pink-600">Пешеходные маршруты</h2>      
         <form>      
             <label for="routeName" class="block mt-2">Поиск по названию:</label>      
-            <input type="text" id="routeName" name="routeName" class="rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">      
-      
+            <input type="text" value="сад" id="routeName" name="routeName" class="rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">      
+            <button id="searchButton">Search</button>
+
             <label for="landmark" class="block mt-2">Поиск по достопримечательности:</label>      
             <select id="landmark" name="landmark" class="rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">      
                 <option value="1">Кибернебо</option>      
@@ -86,49 +88,16 @@
                     </tr>      
                 </thead>      
                 <tbody id="routesData">      
-                    <!-- AJAX response data will be inserted here -->      
+    
                 </tbody>      
             </table>      
         </div>      
       
-        <div class="flex justify-center items-center mt-4">      
-            <button class="bg-pink-600 text-brown-300 px-4 py-2 rounded-md" onclick="getRoutes()">Показать еще</button>      
-        </div>      
+           
     </section>      
 
-    <script>
-    function getRoutes() {
-        const url = 'http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=6373c0af-0602-46bc-9074-1f58d8d4ac19';
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                let routesData = document.getElementById('routesData');
-                data.forEach(route => {
-                    let row = document.createElement('tr');
-                    row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${route.mainObject}</td>`;
-                    routesData.appendChild(row);
-                });
-            });
-    }
-    function filterRoutes() {
-        let input = document.getElementById('routeName').value.toLowerCase();
-        let rows = document.getElementById('routesData').getElementsByTagName('tr');
-
-        for (let i = 0; i < rows.length; i++) {
-            let routeName = rows[i].getElementsByTagName('td')[0];
-            if (routeName) {
-                let textValue = routeName.textContent || routeName.innerText;
-                if (textValue.toLowerCase().indexOf(input) > -1) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
-    }
-    document.getElementById('routeName').addEventListener('input', filterRoutes);
-    </script>
-
+    <script src="js/routes.js"></script>
+    
     <!-- Навигационная панель (пагинация) --> 
     <div class="container mx-auto my-4 flex justify-center"> 
         <button class="bg-pink-200 mx-2 px-3 py-1 rounded-md">1</button> 
