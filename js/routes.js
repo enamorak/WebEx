@@ -1,56 +1,111 @@
-//Выгрузка маршрутов из API
-function getRoutes() {
-    const url = 'http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=6373c0af-0602-46bc-9074-1f58d8d4ac19';
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            let routesData = document.getElementById('routesData');
-            data.forEach(route => {
-                let row = document.createElement('tr');
-                row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${parseAndFormatMainObjects(route.mainObject)}</td>`;
-                routesData.appendChild(row);
-            });
-        });
-}
+document.addEventListener("DOMContentLoaded", function() {
+    const url = 'http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes';
+    const apiKey = '6373c0af-0602-46bc-9074-1f58d8d4ac19';
+    const itemsPerPage = 10; // Количество маршрутов на одной странице
 
-//Очень кривой парсер
-function parseAndFormatMainObjects(mainObject) {
-    let regex = /\d+\.\s(.*?)(?=\d+\.\s|$)/gs;
-    let matches = mainObject.match(regex);
-    if (matches) {
-        let listItems = matches.map(match => `<li>${match}</li>`).join('');
-        return `<ul>${listItems}</ul>`;
-    } else {
-        // Разделение по тире, точкам, запятым и нумерации
+    // Парсер для столбца "mainObject"
+    function parseAndFormatMainObjects(mainObject) {
         let objects = mainObject.split(/[,-]\s|\d+\.\s/);
-        // Удаление пустых элементов и обертка каждой достопримечательности в тег <li>
-        objects = objects.filter(object => object.trim() !== '').map(object => `<li>${object.trim()}</li>`);
-        // Форматирование результатов как список
-        return `<ul>${objects.join('')}</ul>`;
+        objects = objects.filter(object => object.trim() !== '');
+        return objects;
     }
-}
 
-// Функция для получения маршрутов по введенному названию и вывода их в таблицу
-function searchRoutesByName(value) {
-    const url = `http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=6373c0af-0602-46bc-9074-1f58d8d4ac19&name=${value}`;
-    fetch(url)
+    // Функция для запроса списка маршрутов по заданным параметрам
+    function searchRoutesByNameAndLandmark(routeName, landmark) {
+        fetch(`${url}?api_key=${apiKey}&name=${routeName}&mainObject=${landmark}`)
+            .then(response => response.json())
+            .then(data => displayRoutesData(data));
+    }
+
+    // Функция для отображения данных о маршрутах в таблице
+    function displayRoutesData(routes) {
+        const routesData = document.getElementById('routesData');
+        routesData.innerHTML = '';
+        
+        routes.forEach(route => {
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${parseAndFormatMainObjects(route.mainObject).join(', ')}</td>`;
+            routesData.appendChild(row);
+        });
+    }
+
+    // Обработчик для кнопки "Search"
+    document.getElementById('searchButton').addEventListener('click', function() {
+        const routeName = document.getElementById('routeName').value;
+        const landmark = document.getElementById('landmark').value;
+        searchRoutesByNameAndLandmark(routeName, landmark);
+    });
+
+    // Обработчик события "change" для select
+    document.getElementById('landmark').addEventListener('change', function() {
+        const routeName = document.getElementById('routeName').value;
+        const landmark = this.value; // Получаем выбранное значение из select
+        searchRoutesByNameAndLandmark(routeName, landmark);
+    });
+
+    // Получение списка маршрутов при загрузке страницы
+    fetch(`${url}?api_key=${apiKey}`)
         .then(response => response.json())
         .then(data => {
-            let routesData = document.getElementById('routesData');
-            routesData.innerHTML = ''; // Очищаем предыдущие результаты
+            let landmarkSelect = document.getElementById('landmark');
+            // Очищаем все текущие опции
+            landmarkSelect.innerHTML = '';
             data.forEach(route => {
-                let row = document.createElement('tr');
-                row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${parseAndFormatMainObjects(route.mainObject)}</td>`;
-                routesData.appendChild(row);
+                parseAndFormatMainObjects(route.mainObject).forEach(landmark => {
+                    let option = document.createElement('option');
+                    option.value = landmark;
+                    option.textContent = landmark;
+                    landmarkSelect.appendChild(option);
+                });
             });
+            displayRoutesData(data);
+    });
+
+    // Функция для отображения данных о маршрутах в таблице с учетом номера страницы
+    function displayRoutesDataPage(routes, page) {
+        const routesData = document.getElementById('routesData');
+        routesData.innerHTML = '';
+
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayRoutes = routes.slice(startIndex, endIndex);
+
+        displayRoutes.forEach(route => {
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${parseAndFormatMainObjects(route.mainObject).join(', ')}</td>`;
+            routesData.appendChild(row);
         });
-}
+    }
 
-// Получение элемента кнопки "search"
-const searchButton = document.getElementById('searchButton');
+    // Обработчики событий для кнопок пагинации
+    document.querySelectorAll('.rounded-md').forEach(button => {
+        button.addEventListener('click', function() {
+            const pageNumber = parseInt(this.textContent);
+            fetch(`${url}?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => displayRoutesDataPage(data, pageNumber));
+        });
+    });
 
-// Добавление обработчика события при нажатии кнопки "search"
-searchButton.addEventListener('click', function() {
-    const value = document.getElementById('routeName').value; // Получаем значение из поля ввода
-    searchRoutesByName(value); // Вызываем функцию поиска маршрутов по значению и выводим их в таблицу
+    // Получение списка маршрутов при загрузке страницы
+    fetch(`${url}?api_key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            let pageCount = Math.ceil(data.length / itemsPerPage);
+            let paginationDiv = document.getElementById('paginationButtons');
+            for (let i = 1; i <= pageCount; i++) {
+                let button = document.createElement('button');
+                button.textContent = i;
+                button.classList.add('bg-pink-200', 'mx-2', 'px-3', 'py-1', 'rounded-md');
+                button.addEventListener('click', function() {
+                    fetch(`${url}?api_key=${apiKey}`)
+                        .then(response => response.json())
+                        .then(data => displayRoutesDataPage(data, i));
+                });
+                paginationDiv.appendChild(button);
+            }
+            
+            // Отображаем первую страницу маршрутов при загрузке страницы
+            displayRoutesDataPage(data, 1);
+        });
 });
