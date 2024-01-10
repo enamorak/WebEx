@@ -61,20 +61,44 @@ document.addEventListener("DOMContentLoaded", function() {
             displayRoutesData(data);
     });
 
-    // Функция для отображения данных о маршрутах в таблице с учетом номера страницы
-    function displayRoutesDataPage(routes, page) {
-        const routesData = document.getElementById('routesData');
-        routesData.innerHTML = '';
-
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const displayRoutes = routes.slice(startIndex, endIndex);
-
-        displayRoutes.forEach(route => {
-            let row = document.createElement('tr');
-            row.innerHTML = `<td>${route.name}</td><td>${route.description}</td><td>${parseAndFormatMainObjects(route.mainObject).join(', ')}</td>`;
-            routesData.appendChild(row);
-        });
+    // Функция для отображения данных о маршрутах в таблице с учетом номера страницы  
+    function displayRoutesDataPage(routes, page) { 
+        const routesData = document.getElementById('routesData'); 
+        routesData.innerHTML = ''; 
+ 
+        const startIndex = (page - 1) * itemsPerPage; 
+        const endIndex = startIndex + itemsPerPage; 
+        const displayRoutes = routes.slice(startIndex, endIndex); 
+ 
+        displayRoutes.forEach(route => { 
+            let row = document.createElement('tr'); 
+ 
+            // Создаем ячейки для каждого поля маршрута 
+            let nameCell = document.createElement('td'); 
+            nameCell.textContent = route.name; 
+            row.appendChild(nameCell); 
+ 
+            let descriptionCell = document.createElement('td'); 
+            descriptionCell.textContent = route.description; 
+            row.appendChild(descriptionCell); 
+ 
+            let mainObjectsCell = document.createElement('td'); 
+            mainObjectsCell.textContent = parseAndFormatMainObjects(route.mainObject).join(', '); 
+            row.appendChild(mainObjectsCell); 
+ 
+            // Добавляем кнопку "Выбрать маршрут" в новой ячейке 
+            let selectButton = document.createElement('button'); 
+            selectButton.textContent = 'Выбрать'; 
+            selectButton.addEventListener('click', function() { 
+                loadGuidesForRoute(route.id); 
+                alert(`Выбран маршрут: ${route.name}`); 
+            }); 
+            let selectButtonCell = document.createElement('td'); 
+            selectButtonCell.appendChild(selectButton); 
+            row.appendChild(selectButtonCell); 
+ 
+            routesData.appendChild(row); 
+        }); 
     }
 
     // Обработчики событий для кнопок пагинации
