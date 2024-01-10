@@ -16,32 +16,34 @@ async function loadGuidesForRoute(routeId) {
     }
   }
   
-  // Функция для отображения информации о доступных гидах в виде карточек
-  function displayGuidesData(guides) {
+// Функция для отображения информации о доступных гидах в виде карточек
+function displayGuidesData(guides) {
     const guidesContainer = document.getElementById('guidesContainer');
     guidesContainer.innerHTML = '';
-  
+
     guides.forEach(guide => {
-      const card = document.createElement('div');
-      card.classList.add('guide-card');
-      card.innerHTML = `
-        <img src="${guide.profilePicture}" alt="Профиль гида">
-        <h3>${guide.name}</h3>
-        <p>Язык: ${guide.language}</p>
-        <p>Опыт работы: ${guide.workExperience} лет</p>
-        <p>Стоимость за час: ${guide.pricePerHour} руб.</p>
-        <button onclick="selectGuide(${guide.id})">Выбрать</button>
-      `;
-      guidesContainer.appendChild(card);
+        const template = document.getElementById('guideCardTemplate');
+        let clone = document.importNode(template.content, true);
+
+        clone.querySelector('img').src = "img/photo.jpg";
+        clone.querySelector('img').alt = `${guide.name} profile picture`;
+        clone.querySelector('h3').textContent = guide.name;
+        clone.querySelector('p:nth-of-type(1)').textContent = `Языки: ${guide.language}`;
+        clone.querySelector('p:nth-of-type(2)').textContent = `Опыт работы: ${guide.workExperience} лет`;
+        clone.querySelector('p:nth-of-type(3)').textContent = `Стоимость: ${guide.pricePerHour} руб./час`;
+        clone.querySelector('button').setAttribute('onclick', `selectGuide(${guide.id})`);
+
+        guidesContainer.appendChild(clone);
     });
-  }
+}
   
 // Функция для выбора гида
-  function selectGuide(guideId, guideName) {
-      const routeName = document.getElementById('selectedRoute').value;
-      fillForm(routeName, guideName);
-      showApplyButton();
-  }
+// Функция для выбора гида
+function selectGuide(guideId, guideName) {
+    const routeName = document.getElementById('selectedRoute').value;
+    fillForm(routeName, guideName);
+    showApplyButton(); // Вызываем функцию для отображения кнопки "Оформить заявку"
+}
   
 // Функция для отображения кнопки "Оформить заявку"
 function showApplyButton() {
@@ -50,18 +52,26 @@ function showApplyButton() {
 }
 
 // Функция для отображения модального окна с формой оформления заявки 
-function openBookingModal(routeName, guideName) { 
-    const modal = document.getElementById('bookingModal'); 
-    // Установка значений полей формы 
-    document.getElementById('selectedRoute').value = routeName; 
-    document.getElementById('selectedGuide').value = guideName; 
-    // Открытие модального окна 
-    modal.style.display = 'block'; 
-} 
-
-// Обработчик для кнопки "Оформить заявку" 
-document.getElementById('applyButton').addEventListener('click', function() { 
+function openBookingModal(routeName, guideName) {
+    const modal = document.getElementById('modal');
     
+    // Установка значений полей формы
+    document.getElementById('selectedRoute').value = routeName;
+    document.getElementById('selectedGuide').value = guideName;
+
+    // Открытие модального окна
+    modal.classList.remove('hidden');
+}
+
+// Обработчик для кнопки "Оформить заявку"
+document.getElementById('applyButton').addEventListener('click', function() {
+    openBookingModal('Выбранный маршрут', 'Выбранный гид');
+});
+
+// Обработчик для отправки формы оформления заявки
+document.getElementById('submitBooking').addEventListener('click', function(event) {
+    event.preventDefault();
+    // Получите значения полей формы и отправьте данные о заказе на сервер
 });
 
 function calculatePrice(guideServiceCost, hoursNumber, isThisDayOff, isItMorning, isItEvening, numberOfVisitors, isStudentDiscount, isSignLanguageSupport) {
