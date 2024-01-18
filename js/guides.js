@@ -37,42 +37,61 @@ function displayGuidesData(guides) {
     });
 }
   
-// Функция для выбора гида
-// Функция для выбора гида
-function selectGuide(guideId, guideName) {
-    const routeName = document.getElementById('selectedRoute').value;
-    fillForm(routeName, guideName);
-    showApplyButton(); // Вызываем функцию для отображения кнопки "Оформить заявку"
-}
-  
 // Функция для отображения кнопки "Оформить заявку"
 function showApplyButton() {
-    const applyButton = document.getElementById('applyButton');
-    applyButton.style.display = 'block';
+  const applyButton = document.getElementById('applyButton');
+  applyButton.style.display = 'block';
 }
 
-// Функция для отображения модального окна с формой оформления заявки 
+let selectedGuide = null;
+
+// Функция для выбора гида
+function selectGuide(guideName, guidePrice) {
+  showApplyButton(); // Вызываем функцию для отображения кнопки "Оформить заявку"
+  selectedGuide = {
+    name: guideName,
+    price: guidePrice
+  };
+}
+
+// Обработчик события для кнопки "Выбрать" в карточке гида
+document.querySelectorAll('.guide-select-button').forEach(button => {
+  button.addEventListener('click', function() {
+    const guideId = this.dataset.guideId;
+    const guideName = this.dataset.guideName;
+    selectGuide(guideName);
+  });
+});
+
+// Функция для отображения модального окна с формой оформления заявки
 function openBookingModal(routeName, guideName) {
-    const modal = document.getElementById('modal');
-    
-    // Установка значений полей формы
-    document.getElementById('selectedRoute').value = routeName;
-    document.getElementById('selectedGuide').value = guideName;
+  const modal = document.getElementById('modal');
 
-    // Открытие модального окна
-    modal.classList.remove('hidden');
+  // Установка значений полей формы
+  document.getElementById('selectedRoute').value = routeName;
+  document.getElementById('selectedGuide').value = guideName;
+
+  // Открытие модального окна
+  modal.classList.remove('hidden');
 }
 
-// Обработчик для кнопки "Оформить заявку"
+// Обработчик события для кнопки "Оформить заявку"
 document.getElementById('applyButton').addEventListener('click', function() {
-    openBookingModal('Выбранный маршрут', 'Выбранный гид');
+  const routeName = document.getElementById('selectedRoute').value;
+  const guideName = document.getElementById('selectedGuide').value;
+  openBookingModal(routeName, guideName);
 });
 
-// Обработчик для отправки формы оформления заявки
-document.getElementById('submitBooking').addEventListener('click', function(event) {
-    event.preventDefault();
-    // Получите значения полей формы и отправьте данные о заказе на сервер
-});
+// Функция для отображения модального окна
+function toggleModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.toggle('hidden');
+}
+
+// Обработчик события для кнопки "Оформить заявку"
+document.getElementById('applyButton').addEventListener('click', function() {
+    toggleModal(); // Вызываем функцию для отображения/скрытия модального окна
+  });
 
 function calculatePrice(guideServiceCost, hoursNumber, isThisDayOff, isItMorning, isItEvening, numberOfVisitors, isStudentDiscount, isSignLanguageSupport) {
     let price = guideServiceCost * hoursNumber;
@@ -112,5 +131,31 @@ function calculatePrice(guideServiceCost, hoursNumber, isThisDayOff, isItMorning
         }
     }
 
-    return price;
+    return price;  // Возвращение рассчитанной цены
 }
+
+// Функция для расчета цены и ее отображения
+function calculateAndDisplayPrice() {
+    // Получение значений из формы
+    const guideServiceCost = selectedGuide.price;
+    const hoursNumber = parseInt(document.getElementById('duration').value);
+    const isThisDayOff = false; // Пример значения для дня выхода
+    const isItMorning = false; // Пример значения для утреннего времени
+    const isItEvening = false; // Пример значения для вечернего времени
+    const numberOfVisitors = parseInt(document.getElementById('numberOfVisitors').value);
+    const isStudentDiscount = document.getElementById('studentDiscount').checked;
+    const isSignLanguageSupport = document.getElementById('signLanguageSupport').checked;
+  
+    // Вызов функции для расчета цены и получение результата
+    const price = calculatePrice(guideServiceCost, hoursNumber, isThisDayOff, isItMorning, isItEvening, numberOfVisitors, isStudentDiscount, isSignLanguageSupport);
+  
+    // Отображение цены пользователю
+    const finalPrice = document.getElementById('finalPrice');
+    finalPrice.textContent = `${price} руб.`;
+}
+
+// Добавление обработчика события для отправки формы оформления заявки
+document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвращение отправки формы
+    calculateAndDisplayPrice(); // Вызов функции для расчета и отображения цены
+});

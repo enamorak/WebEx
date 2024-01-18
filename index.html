@@ -14,99 +14,102 @@
 
 <body>  
 
-    <script src="js/routes.js"></script>
-    <script src="js/guides.js"></script>
+    <!-- Плейсхолдер, чтобы шапка ничего не закрывала -->
+    <div class="header-placeholder h-32 bg-white"></div>
 
-    <!-- Плейсхолдер, чтобы шапка ничего не закрывала -->  
-    <div class="header-placeholder h-32 bg-white-300"> </div>
-    
-    <!-- Шапка сайта -->  
-    <header class="bg-pink-600 nav-bar">       
-        <div class="container mx-auto p-4 flex items-center justify-between">       
-            <img src="img/CyberpinkTours2.png" class="h-12">       
-            <nav class="text-brown-300">           
-                <a href="#" class="text-brown-300 text-sm font-semibold ml-2">Главная</a>           
-                <a href="#" class="text-brown-300 text-sm font-semibold ml-2">О нас</a>  
-                <a href="#" class="text-brown-300 text-sm font-semibold ml-2">Личный кабинет</a>           
-                <a href="#" class="text-brown-300 text-sm font-semibold ml-2">Маршруты</a>           
-                <a href="#" class="text-brown-300 text-sm font-semibold ml-2">Контакты</a>       
-            </nav>       
-        </div>       
-    </header>    
-  
-    <!-- Область для всплывающих уведомлений -->  
-    <div class="bg-gray-200 py-2 notification">  
-        <div class="container mx-auto text-center">  
-            <p class="text-sm text-gray-300">Уведомление: новый маршрут добавлен!</p>  
-        </div>  
-    </div>  
+    <!-- Шапка сайта -->
+    <header class="bg-pink-600 nav-bar">
+        <div class="container mx-auto p-4 flex items-center justify-between">
+            <img src="img/CyberpinkTours2.png" class="h-12">
+            <nav class="text-brown-300 text-sm font-semibold">
+                <a href="#" class="ml-2">Главная</a>
+                <a href="#" class="ml-2">О нас</a>
+                <a href="lk.html" class="ml-2">Личный кабинет</a>
+                <a href="#" class="ml-2">Маршруты</a>
+                <a href="#" class="ml-2">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Область для всплывающих уведомлений -->
+    <div class="bg-gray-200 py-2 notification">
+        <div class="container mx-auto text-center">
+            <p class="text-sm text-gray-300">Уведомление: новый маршрут добавлен!</p>
+        </div>
+    </div>
   
     <!-- Блок с изображением и описанием компании -->  
     <section class="container mx-auto my-4">
-        <div class="flex items-center">
-            <img src="img/CyberpinkTours.png" alt="Cyberpink Tours" class="w-1/3 rounded-lg animate-pulse">
-            <div class="ml-4">
-                <h2 class="text-2xl font-bold text-pink-600">Ощути атмосферу киберпанка вместе с нами!</h2>
+        <div class="flex flex-col md:flex-row items-center">
+            <img src="img/CyberpinkTours.png" alt="Cyberpink Tours" class="w-full md:w-1/3 rounded-lg md:animate-pulse mb-4 md:mb-0">
+            <div class="md:ml-4">
+                <h2 class="text-2xl font-bold text-pink-600 mb-2 md:mb-4">Ощути атмосферу киберпанка вместе с нами!</h2>
                 <p class="text-gray-700">Присоединяйтесь к нашим уникальным пешеходным маршрутам по Москве, где вы сможете увидеть весь величественный кибергород, скрытый от посторонних глаз.</p>
             </div>
         </div>
-    </section>
+    </section>    
     
     <!-- Блок с информацией о достоинствах компании -->  
-    <div class="inf">
-        <div class="positive bg-pink-100 ">
-            <h3 class="text-xl font-bold text-pink-600">Эксклюзивные маршруты</h3>
+    <div class="inf grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="positive bg-pink-100 p-4 text-center rounded-lg w-full md:w-auto">
+            <h3 class="text-l font-bold text-pink-600">Эксклюзивные маршруты</h3>
             <p>Открывающие новые грани Москвы</p>
         </div>
-        <div class="positive bg-pink-100 ">
-            <h3 class="text-xl font-bold text-pink-600">Профессиональные гиды</h3>
+        <div class="positive bg-pink-100 p-4 text-center rounded-lg w-full md:w-auto">
+            <h3 class="text-l font-bold text-pink-600">Профессиональные гиды</h3>
             <p>Погружающие в мир киберпанка</p>
         </div>
-        <div class="positive bg-pink-100 ">
-            <h3 class="text-xl font-bold text-pink-600">Простой процесс бронирования</h3>
+        <div class="positive bg-pink-100 p-4 text-center rounded-lg w-full md:w-auto">
+            <h3 class="text-l font-bold text-pink-600">Простой процесс бронирования</h3>
             <p>Удобная оплата</p>
         </div>
     </div>
   
     <!-- Блок с данными о пешеходных маршрутах -->      
-    <section class="container mx-auto my-4">      
-        <h2 class="text-2xl font-bold text-pink-600">Пешеходные маршруты</h2>      
-        <form>      
-            <label for="routeName" class="block mt-2">Поиск по названию:</label>      
-            <input type="text" value="сад" id="routeName" name="routeName" class="rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">      
-            <button id="searchButton">Search</button>
-
-            <label for="landmark" class="block mt-2">Поиск по достопримечательности:</label>      
-            <select id="landmark" name="landmark" class="rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">      
-                    
-            </select>      
-        </form>      
-      
-        <div class="mt-4">      
-            <table class="table-auto">      
-                <thead>      
-                    <tr>      
-                        <th class="px-4 py-2">Название маршрута</th>      
-                        <th class="px-4 py-2">Описание</th>
-                        <th class="px-4 py-2">Основные объекты</th>        
-                    </tr>      
-                </thead>      
-                <tbody id="routesData">      
+    <section class="container mx-auto my-4 px-4 overflow-x-auto">
+        <h2 class="text-2xl font-bold text-pink-600">Пешеходные маршруты</h2>
+        <form class="mt-4">
+            <label for="routeName" class="block mt-2">Поиск по названию:</label>
+            <div class="flex">
+                <input type="text" value="сад" id="routeName" name="routeName" class="rounded-l-md border border-gray-500 p-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">
+                <button id="searchButton" class="bg-pink-600 text-white rounded-r-md py-2 px-4 ml-1 hover:bg-pink-700">Search</button>
+            </div>
     
-                </tbody>      
-            </table>      
-        </div>      
-      
-           
-    </section>      
+            <label for="landmark" class="block mt-4">Поиск по достопримечательности:</label>
+            <select id="landmark" name="landmark" class="rounded-md border border-gray-500 p-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent"></select>
+        </form>
+    
+        <div class="mt-4">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Название маршрута</th>
+                        <th class="px-4 py-2">Описание</th>
+                        <th class="px-4 py-2">Основные объекты</th>
+                    </tr>
+                </thead>
+                <tbody id="routesData">
+                    <!-- AJAX response data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
     
     <!-- Навигационная панель (пагинация) -->
-    <div class="container mx-auto my-4 flex justify-center" id="paginationButtons">
-    <!-- Кнопки пагинации будут созданы динамически здесь -->
+    <div class="container mx-auto my-4 flex flex-col md:flex-row md:justify-center items-center">
+        <!-- Кнопка "Назад" -->
+        <button id="prevButton" class="rounded-md bg-pink-300 px-3 py-2 m-1 hidden md:block" onclick="prevPage()">Назад</button>
+        <div id="paginationButtons" class="flex flex-wrap justify-center"></div>
+        <!-- Кнопка "Вперед" -->
+        <button id="nextButton" class="rounded-md bg-pink-300 px-3 py-2 m-1 hidden md:block" onclick="nextPage()">Вперед</button>
     </div>
-
-    <!-- Кнопка для оформления заявки -->
-    <button id="applyButton" style="display: none;" onclick="openBookingForm()">Оформить заявку</button>
+    
+    <!-- Кнопка для оформления заявки --> 
+    <div class="flex justify-center items-center">
+        <button id="applyButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded shadow-md transition duration-300 ease-in-out" style="display: none;">
+          Оформить заявку
+        </button>
+      </div>      
 
     <!-- Модальное окно -->
     <div id="modal" class="modal hidden fixed w-full h-full top-0 left-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
@@ -118,27 +121,37 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-4">Оформление заявки</h2>
                 <!-- Форма для оформления заявки -->
-                <form id="bookingForm" class="p-2">
-                    <input type="text" id="selectedRoute" name="selectedRoute" disabled>
-                    <input type="text" id="selectedGuide" name="selectedGuide" disabled>
-                    <label for="date">Дата экскурсии:</label>
-                    <input type="date" id="date" name="date">
-                    <label for="time">Время начала экскурсии:</label>
-                    <input type="time" id="time" name="time" min="09:00" max="23:00" step="1800">
-                    <label for="duration">Длительность экскурсии:</label>
-                    <select id="duration" name="duration">
-                        <option value="1">1 час</option>
-                        <option value="2">2 часа</option>
-                        <option value="3">3 часа</option>
-                    </select>
-                    <label for="numberOfVisitors">Количество человек в группе:</label>
-                    <input type="number" id="numberOfVisitors" name="numberOfVisitors" min="1" max="20">
-                    <label for="studentDiscount">Использовать скидку для школьников и студентов:</label>
-                    <input type="checkbox" id="studentDiscount" name="studentDiscount">
-                    <label for="signLanguageSupport">Сопровождение сурдопереводчика:</label>
-                    <input type="checkbox" id="signLanguageSupport" name="signLanguageSupport">
+                <form id="bookingForm" class="p-4 bg-pink-100 rounded-lg max-w-md mx-auto mt-8">
+                    <div class="mb-4">
+                        <label for="date" class="block text-gray-700">Дата экскурсии:</label>
+                        <input type="date" id="date" name="date" class="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">
+                    </div>
+                    <div class="mb-4">
+                        <label for="time" class="block text-gray-700">Время начала экскурсии:</label>
+                        <input type="time" id="time" name="time" min="09:00" max="23:00" step="1800" class="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">
+                    </div>
+                    <div class="mb-4">
+                        <label for="duration" class="block text-gray-700">Длительность экскурсии:</label>
+                        <select id="duration" name="duration" class="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">
+                            <option value="1">1 час</option>
+                            <option value="2">2 часа</option>
+                            <option value="3">3 часа</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="numberOfVisitors" class="block text-gray-700">Количество человек в группе:</label>
+                        <input type="number" id="numberOfVisitors" name="numberOfVisitors" min="1" max="20" class="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent">
+                    </div>
+                    <div class="mb-4">
+                        <input type="checkbox" id="studentDiscount" name="studentDiscount" class="mr-2 leading-tight">
+                        <label for="studentDiscount" class="text-gray-700">Использовать скидку для школьников и студентов</label>
+                    </div>
+                    <div class="mb-4">
+                        <input type="checkbox" id="signLanguageSupport" name="signLanguageSupport" class="mr-2 leading-tight">
+                        <label for="signLanguageSupport" class="text-gray-700">Сопровождение сурдопереводчика</label>
+                    </div>
                     <p>Итоговая стоимость: <span id="finalPrice">--</span> руб.</p>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between mt-4">
                         <button type="button" onclick="toggleModal()" class="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600">Отмена</button>
                         <button type="submit" id="submitBooking" class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600">Отправить</button>
                     </div>
@@ -146,8 +159,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div id="guidesContainer" class="flex flex-wrap items-stretch justify-evenly p-4">
         <!-- Карточки гидов -->
@@ -169,6 +180,9 @@
 
     
     <div id="priceDisplay">Стоимость: <span id="finalPrice">--</span></div>
+
+    <script src="js/routes.js"></script>
+    <script src="js/guides.js"></script>
 
     <!-- Футер --> 
     <footer class="bg-pink-600 text-white text-center py-4"> 

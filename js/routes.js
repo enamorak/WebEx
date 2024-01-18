@@ -45,20 +45,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Получение списка маршрутов при загрузке страницы
     fetch(`${url}?api_key=${apiKey}`)
-        .then(response => response.json())
-        .then(data => {
-            let landmarkSelect = document.getElementById('landmark');
-            // Очищаем все текущие опции
-            landmarkSelect.innerHTML = '';
-            data.forEach(route => {
-                parseAndFormatMainObjects(route.mainObject).forEach(landmark => {
-                    let option = document.createElement('option');
-                    option.value = landmark;
-                    option.textContent = landmark;
-                    landmarkSelect.appendChild(option);
-                });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        let landmarkSelect = document.getElementById('landmark');
+        // Очищаем все текущие опции
+        landmarkSelect.innerHTML = '';
+        data.forEach(route => {
+            parseAndFormatMainObjects(route.mainObject).forEach(landmark => {
+                let option = document.createElement('option');
+                option.value = landmark;
+                option.textContent = landmark;
+                landmarkSelect.appendChild(option);
             });
-            displayRoutesData(data);
+        });
+        displayRoutesData(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // В случае возникновения ошибки показать уведомление пользователю
+        alert('Ошибка при загрузке данных с сервера');
     });
 
     // Функция для отображения данных о маршрутах в таблице с учетом номера страницы  
@@ -101,6 +111,20 @@ document.addEventListener("DOMContentLoaded", function() {
         }); 
     }
 
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage -= 1;
+            displayRoutesDataPage(routesData, currentPage);
+        }
+    }
+    
+    function nextPage() {
+        if (currentPage < Math.ceil(routesData.length / itemsPerPage)) {
+            currentPage += 1;
+            displayRoutesDataPage(routesData, currentPage);
+        }
+    }
+
     // Обработчики событий для кнопок пагинации
     document.querySelectorAll('.rounded-md').forEach(button => {
         button.addEventListener('click', function() {
@@ -111,25 +135,51 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Обработчик события для кнопки "Назад"
+    document.getElementById('prevButton').addEventListener('click', prevPage);
+
+    // Обработчик события для кнопки "Вперед"
+    document.getElementById('nextButton').addEventListener('click', nextPage);
+
     // Получение списка маршрутов при загрузке страницы
     fetch(`${url}?api_key=${apiKey}`)
-        .then(response => response.json())
-        .then(data => {
-            let pageCount = Math.ceil(data.length / itemsPerPage);
-            let paginationDiv = document.getElementById('paginationButtons');
-            for (let i = 1; i <= pageCount; i++) {
-                let button = document.createElement('button');
-                button.textContent = i;
-                button.classList.add('bg-pink-200', 'mx-2', 'px-3', 'py-1', 'rounded-md');
-                button.addEventListener('click', function() {
-                    fetch(`${url}?api_key=${apiKey}`)
-                        .then(response => response.json())
-                        .then(data => displayRoutesDataPage(data, i));
-                });
-                paginationDiv.appendChild(button);
-            }
-            
-            // Отображаем первую страницу маршрутов при загрузке страницы
-            displayRoutesDataPage(data, 1);
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        let pageCount = Math.ceil(data.length / itemsPerPage);
+        let paginationDiv = document.getElementById('paginationButtons');
+        for (let i = 1; i <= pageCount; i++) {
+            let button = document.createElement('button');
+            button.textContent = i;
+            button.classList.add('bg-pink-200', 'mx-2', 'px-3', 'py-1', 'rounded-md');
+            button.addEventListener('click', function() {
+                fetch(`${url}?api_key=${apiKey}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => displayRoutesDataPage(data, i))
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // В случае возникновения ошибки показать уведомление пользователю
+                        alert('Ошибка при загрузке данных для страницы маршрутов');
+                    });
+            });
+            paginationDiv.appendChild(button);
+        }
+        // Отображаем первую страницу маршрутов при загрузке страницы
+        displayRoutesDataPage(data, 1);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // В случае возникновения ошибки показать уведомление пользователю
+        alert('Ошибка при загрузке данных с сервера');
+    });
+
 });

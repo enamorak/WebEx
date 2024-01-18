@@ -1,0 +1,85 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Cyberpink Tours</title>  
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">  
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comforter&family=Tektur&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">  
+    
+</head>  
+
+<body>  
+
+    <!-- Плейсхолдер, чтобы шапка ничего не закрывала -->
+    <div class="header-placeholder h-32 bg-white"></div>
+
+    <!-- Шапка сайта -->
+    <header class="bg-pink-600 nav-bar">
+        <div class="container mx-auto p-4 flex items-center justify-between">
+            <img src="img/CyberpinkTours2.png" class="h-12">
+            <nav class="text-brown-300 text-sm font-semibold">
+                <a href="#" class="ml-2">Главная</a>
+                <a href="#" class="ml-2">О нас</a>
+                <a href="/lk.html" class="ml-2">Личный кабинет</a>
+                <a href="#" class="ml-2">Маршруты</a>
+                <a href="#" class="ml-2">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Область для всплывающих уведомлений -->
+    <div class="bg-gray-200 py-2 notification">
+        <div class="container mx-auto text-center">
+            <p class="text-sm text-gray-300">Уведомление: новый маршрут добавлен!</p>
+        </div>
+    </div>
+  
+    <!-- Шапка личного кабинета -->
+    <header class="bg-gray-200 p-4">
+        <h1 class="text-2xl font-bold">Личный кабинет</h1>
+    </header>
+
+    <!-- Таблица с данными заявок -->
+    <table class="min-w-full">
+        <thead>
+        <tr>
+            <th>Порядковый номер</th>
+            <th>Название маршрута</th>
+            <th>Дата экскурсии</th>
+            <th>Итоговая стоимость</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody id="requestsTable">
+        <!-- Данные заявок будут добавлены с помощью JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Модальное окно для подробной информации о заявке -->
+    <div id="modalDetails" class="hidden">
+        <!-- Вся информация о заявке будет добавлена динамически -->
+    </div>
+
+    <!-- Модальное окно для редактирования заявки -->
+    <div id="modalEdit" class="hidden">
+        <!-- Форма для редактирования заявки будет добавлена динамически -->
+    </div>
+
+    <!-- Модальное окно для подтверждения удаления заявки -->
+    <div id="modalConfirmation" class="hidden">
+        <!-- Блок с текстом и кнопками для подтверждения удаления заявки -->
+    </div>
+
+    <script src="js/routes.js"></script>
+    <script src="js/guides.js"></script>
+
+    <!-- Футер --> 
+    <footer class="bg-pink-600 text-white text-center py-4"> 
+        <p>Контактная информация: cyberpunktours@example.com | +7 123 456 7890</p> 
+    </footer> 
+</body> 
+</html>
