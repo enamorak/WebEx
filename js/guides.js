@@ -154,8 +154,47 @@ function calculateAndDisplayPrice() {
     finalPrice.textContent = `${price} руб.`;
 }
 
+
 // Добавление обработчика события для отправки формы оформления заявки
 document.getElementById('bookingForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Предотвращение отправки формы
     calculateAndDisplayPrice(); // Вызов функции для расчета и отображения цены
-});
+    // Получение данных из формы
+    const formData = new FormData(document.getElementById('bookingForm'));
+    const url = 'http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/orders?api_key=6373c0af-0602-46bc-9074-1f58d8d4ac19';
+  
+    // Отправка запроса на добавление заявки
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(newItem => {
+      console.log('Заявка успешно добавлена:', newItem);
+  
+      // Запрос на получение обновленного списка заявок
+      fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/orders?api_key=6373c0af-0602-46bc-9074-1f58d8d4ac19')
+      .then(response => response.json())
+      .then(data => {
+        const requestsTable = document.getElementById('requestsTable');
+        requestsTable.innerHTML = ''; // Очистка предыдущих данных
+  
+        data.forEach(request => {
+          let row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${request.id}</td>
+            <td>${request.routeName}</td>
+            <td>${request.date}</td>
+            <td>${request.totalCost}</td>
+            <td>
+              <!-- Добавление кнопок для действий с заявкой -->
+            </td>
+          `;
+          requestsTable.appendChild(row);
+        });
+      });
+    })
+    .catch(error => {
+      console.error('Ошибка при добавлении заявки:', error);
+    });
+  });
